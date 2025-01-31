@@ -1,0 +1,10 @@
+matplotlib
+numpy
+torchvision==0.11.0
+torchaudio==0.10.0 
+Pillow
+typed-argument-parser
+timm==0.5.4
+setuptools==59.5.0
+tensorboard
+tensorboardx

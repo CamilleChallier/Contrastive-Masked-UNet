@@ -1,0 +1,7 @@
+tqdm 
+opencv-python
+numpy==1.26.4
+scipy
+mmengine 
+timm
+scikit-learn
