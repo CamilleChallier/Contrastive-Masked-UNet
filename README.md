@@ -1,6 +1,6 @@
 # Self-Supervised Learning for Coronary Artery Segmentation in X-Ray Angiography
 
-## Abstract
+## 1-Abstract
 
 **BACKGROUND.** Medical image segmentation is a fundamental process for converting raw biomedical images into structured, interpretable data, which plays a pivotal role in clinical applications. It helps reduce diagnostic errors, relieve the radiologist's workload, and accelerate diagnosis. This study focuses on the segmentation of coronary arteries in X-ray angiography images for disease detection, a complex task hindered by several factors. Accurate segmentation is complicated by the intricate geometry of coronary vessels, low signal-to-noise ratios, and overlapping structures such as catheters, the spine, and ribs. Furthermore, training deep learning models for these tasks typically requires large and meticulously annotated data sets, a resource often scarce in the medical imaging domain due to the complexity of annotation, restricted access to data, and the rarity of certain conditions.
 
@@ -12,7 +12,7 @@
 
 **CONCLUSION.** This study highlights the potential of self-supervised learning in enhancing segmentation performance and reducing the need for extensive labeled datasets. The proposed method demonstrates significant improvements in coronary artery segmentation, even with limited annotated data, and showcase its robustness in adapting to datasets with varying amounts of labeled information.
 
-## Files
+## 2-Files
 
 ```txt
 .
@@ -42,7 +42,7 @@
 ├── README.md # Project README file
 └── requirements.txt # File listing project dependencies
 ```
-## Installation
+## 3-Installation
 **Clone the repository**
 
 ```bash
@@ -63,7 +63,7 @@ conda activate env
 pip install -r requirements.txt
 ```
 
-## Dataset
+## 4-Dataset
 
 Place the dataset inside the dataset/ folder with the following structure:
 ```txt
@@ -73,10 +73,10 @@ Place the dataset inside the dataset/ folder with the following structure:
 │   └── masks/ # Directory containing corresponding masks
 ```
 
-## Pretraining
+## 5-Pretraining
 
-### With MAE:
-In the config.py replace model with 'MAE' 
+### A. With MAE:
+In the config.py replace model with 'MAE'. Various hyperparameter choices are available in the configuration file.
 ```bash
 conda activate env
 cd Pretraining/Transformation_based/
@@ -84,8 +84,8 @@ python -W ignore Genesis_Chest_CT.py
 ```
 *Note: Original Code by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
 
-### With Model Genesis:
-In the config.py replace model with 'Model Genesis' 
+### B. With Model Genesis:
+In the config.py replace model with 'Model Genesis'. Various other parameter choices are available.
 ```bash
 cd Pretraining/Transformation_based/
 conda activate env
@@ -93,7 +93,7 @@ python -W ignore pytorch/Genesis_Chest_CT.py
 ```
 *Note: Original Code by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
 
-### With MoCo:
+### C. With MoCo:
 
 **Installation**
 ```bash
@@ -112,7 +112,7 @@ python moco2_module.py  --dataset=medical --max_epochs=500
 
 *Note: Original Code by [Wolfda95/SSL-MedicalImagining-CL-MAE](https://github.com/Wolfda95/SSL-MedicalImagining-CL-MAE) and [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
 
-### With Spark:
+### D. With Spark:
 
 **Installations**
 
@@ -131,7 +131,7 @@ screen python main.py --full_unet True --model "unet_sparse"
 
 *Note: Original Code by [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
 
-### With CM-UNet:
+### E. With CM-UNet:
 
 **Environment Installations**
 
@@ -146,21 +146,29 @@ conda activate cmunet
 bash training/dist_train.sh configs/cmunet_config.py 1 --local_rank 0
 ```
 
+The training script supports the following arguments:
+| Argument            | Type       | Default          | Description |
+|---------------------|-----------|------------------|-------------|
+| **Positional Arguments** | | | |
+| `config`           | `str`     | Required         | Path to the training configuration file (e.g., `configs/cmunet_config.py`). |
+| **Distributed Training Parameters** | | | |
+| `GPUS`      | `int`     | Required         | Number of GPUs per node. |
+| `NNODES`           | `int`     | `1`              | Total number of nodes in distributed training. |
+| `NODE_RANK`        | `int`     | `0`              | Rank of the current node in multi-node training. |
+| `PORT`            | `int`     | `29500`          | Port for distributed training communication. |
+| `MASTER_ADDR`      | `str`     | `"127.0.0.1"`    | IP address of the master node. |
+| **Optional Arguments** | | | |
+| `--work-dir`       | `str`     | `None`           | Directory to save logs and model checkpoints. |
+| `--resume`  | `str` (optional) | `auto`  | Resume training from a checkpoint. If no path is given, resumes from the latest checkpoint in `work-dir`. |
+| `--amp`            | `flag`    | `False`          | Enables Automatic Mixed Precision (AMP) training. |
+| `--cfg-options key=valu` | `dict` | `None` | Overrides specific config settings (e.g., `--cfg-options key="[a,b]"`). |
+| `--launcher` | `str` | `none` | Job launcher type: `none` (local), `pytorch` (distributed), `slurm` (cluster), `mpi`. |
+| `--local-rank`     | `int`     | `0`              | Specifies local rank in distributed training. |
+
+
 *Note: Original Code by [ZhichengHuang/CMAE](https://github.com/ZhichengHuang/CMAE).*
 
-
-## Finetuning
-
-The training script supports the following arguments:
-
-| Argument            | Short | Type    | Default                                    | Description                          |
-|---------------------|-------|---------|--------------------------------------------|--------------------------------------|
-| `--epochs`         | `-e`  | `list`  | `[2]`                                     | Number of epochs                    |
-| `--batch-size`     | `-b`  | `list`  | `[16, 32]`                                | Batch size options                   |
-| `--learning-rate`  | `-l`  | `list`  | `[0.1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]`     | Learning rate values                 |
-| `--pretrained`     | `-p`  | `str`   | `None`                                    | Path to a pretrained model          |
-| `--name`           | `-n`  | `str`   | `"base"`                                  | Name for the trained model          |
-| `--ratio`          | `-r`  | `float` | `0.1`                                     | Ratio of the fine-tuning dataset    |
+## 6-Finetuning
 
 To train the UNet model, use the following command:
 
@@ -169,3 +177,13 @@ conda activate env
 cd Finetuning/
 python train.py -p "path_to_pretrained_model"
 ```
+
+The training script supports the following arguments:
+| Argument            | Short | Type    | Default                                    | Description                          |
+|---------------------|-------|---------|--------------------------------------------|--------------------------------------|
+| `--epochs`         | `-e`  | `list`  | `[2]`                                     | Number of epochs                    |
+| `--batch-size`     | `-b`  | `list`  | `[16, 32]`                                | Batch size options                   |
+| `--learning-rate`  | `-l`  | `list`  | `[0.1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]`     | Learning rate values                 |
+| `--pretrained`     | `-p`  | `str`   | `None`                                    | Path to a pretrained model          |
+| `--name`           | `-n`  | `str`   | `"base"`                                  | Name for the trained model          |
+| `--ratio`          | `-r`  | `float` | `0.1`                                     | Ratio of the fine-tuning dataset    |
