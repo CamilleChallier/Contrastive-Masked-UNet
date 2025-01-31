@@ -1,4 +1,4 @@
-# Self-Supervised Learning for Coronary Artery Segmentation in X-Ray Angiography
+# CM-UNet: a Self-Supervised Learning-based model for Coronary Artery Segmentation in X-Ray Angiography
 
 ## 1-Abstract
 
