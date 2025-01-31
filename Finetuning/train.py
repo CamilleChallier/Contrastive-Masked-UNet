@@ -133,7 +133,6 @@ class Epoch:
 
                 # update metrics logs
                 for metric_fn in self.metrics:
-                    # print(metric_fn)
                     metric_value = metric_fn(y_pred, y).cpu().detach().numpy()
                     metrics_meters[metric_fn.__name__].add(metric_value)
                 metrics_logs = {k: v.mean for k, v in metrics_meters.items()}
@@ -330,7 +329,6 @@ def main_finetuning(args, loss, metrics, DEVICE, select_class_values, X_finetuni
 
                 for fold, (train_idx, val_idx) in enumerate(kf.split(X_finetuning)):  
                     print(f"Fold {fold + 1}/{3}")
-                    print(train_idx)
                     name = f'./work_dir/{args.name}_{LR}_{BATCH}_{fold+1}.pth'
 
                     # Split data into train and validation sets
@@ -450,7 +448,7 @@ if __name__ == '__main__':
     select_class_values =  np.array([[0],[1]])
 
     # Set device: `cuda` or `cpu`
-    DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    DEVICE = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     print("DEVICE:",DEVICE)
 
     # define loss function
@@ -470,6 +468,5 @@ if __name__ == '__main__':
     _, X_finetuning, _, y_finetuning = train_test_split(X_train, y_train, test_size=args.ratio/0.8, random_state=42)
     
     best_LR, best_BATCH, best_EPOCH = main_finetuning(args, loss, metrics, DEVICE, select_class_values, X_finetuning, y_finetuning)
-    print(best_LR, best_BATCH, best_EPOCH)
     test(args, best_LR, best_BATCH, best_EPOCH, loss, metrics, DEVICE, select_class_values, X_finetuning, y_finetuning)
 

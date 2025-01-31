@@ -5,7 +5,7 @@ ipykernel
 pandas
 scikit-learn
 tqdm
-opencv-python==4.8.0.76
+opencv-python
 torch==2.5.1
 albumentations==1.4.18
 timm==0.3.2

@@ -51,7 +51,7 @@ cd Contrastive-Masked-UNet
 **Create a conda environment**
 
 ```bash
-conda create --name env python=3.9 -y
+conda create --name env python=3.10.12 -y
 conda activate env
 ```
 
@@ -76,20 +76,20 @@ Place the dataset inside the dataset/ folder with the following structure:
 ### With MAE:
 In the config.py replace model with 'MAE' 
 ```bash
-cd selfsupervised_pretraining/Transformation_based/
 conda activate env
-python -W ignore pytorch/Genesis_Chest_CT.py
+cd Pretraining/Transformation_based/
+python -W ignore Genesis_Chest_CT.py
 ```
-*Note: Code inspired by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
+*Note: Original Code by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
 
 ### With Model Genesis:
 In the config.py replace model with 'Model Genesis' 
 ```bash
-cd selfsupervised_pretraining/Transformation_based/
+cd Pretraining/Transformation_based/
 conda activate env
 python -W ignore pytorch/Genesis_Chest_CT.py
 ```
-*Note: Code inspired by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
+*Note: Original Code by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
 
 ### With MoCo:
 
@@ -104,11 +104,11 @@ pip install -r requirements.txt
 
 **Run**
 ```bash
-cd selfsupervised_pretraining/MOCO/pl_bolts/models/self_supervised/moco/
+cd pl_bolts/models/self_supervised/moco/
 python moco2_module.py  --dataset=medical --max_epochs=500 
 ```
 
-*Note: Code inspired by [Wolfda95/SSL-MedicalImagining-CL-MAE](https://github.com/Wolfda95/SSL-MedicalImagining-CL-MAE) and [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
+*Note: Original Code by [Wolfda95/SSL-MedicalImagining-CL-MAE](https://github.com/Wolfda95/SSL-MedicalImagining-CL-MAE) and [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
 
 ### With Spark:
 
@@ -123,39 +123,28 @@ pip install -r requirements.txt
 ```
 
 ```bash
-cd selfsupervised_pretraining/spark/pretrain/
+cd Pretraining/spark/pretrain/
 screen python main.py --full_unet True --model "unet_sparse"
 ```
 
-*Note: Code inspired by [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
+*Note: Original Code by [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
 
 ### With CM-UNet:
 
-**Create a conda environment**
+**Environment Installations**
 
 ```bash
-conda create --name cmunet python=3.9 -y
+cd Pretraining/CM-UNet/
+conda env create -f environment.yml
 conda activate cmunet
-```
-
-**Installations**
-
-```bash
-conda install pytorch==2.5.1 torchvision==0.20.0 torchaudio==2.5.0 pytorch-cuda=12.4 -c pytorch -c nvidia # for cuda 12.4
-# conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=12.4 -c pytorch -c nvidia 
-# conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch-nightly -c nvidia
-conda install libgcc
-pip install -r requirements.txt
-pip3 install -v -e .
 ```
 
 **Run**
 ```bash
-cd CM-UNet/
 bash training/dist_train.sh configs/cmunet_config.py 1 --local_rank 0
 ```
 
-*Note: Code inspired by [ZhichengHuang/CMAE](https://github.com/ZhichengHuang/CMAE).*
+*Note: Original Code by [ZhichengHuang/CMAE](https://github.com/ZhichengHuang/CMAE).*
 
 
 ## Finetuning

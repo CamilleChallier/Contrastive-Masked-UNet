@@ -14,6 +14,7 @@ import numpy as np
 from numbers import Number
 import torch
 import re
+import cv2
 
 from mmengine.registry import build_from_cfg
 from PIL import Image, ImageFilter
@@ -91,27 +92,6 @@ def register_vision_transforms() -> List[str]:
 
 # register all the transforms in torchvision by using a transform wrapper
 VISION_TRANSFORMS = register_vision_transforms()
-
-
-# @TRANSFORMS.register_module(force=True)
-# class ToTensor(object):
-#     """Convert image or a sequence of images to tensor.
-#
-#     This module can not only convert a single image to tensor, but also a
-#     sequence of images.
-#     """
-#
-#     def __init__(self) -> None:
-#         self.transform = _transforms.ToTensor()
-#
-#     def __call__(self, imgs: Union[object, Sequence[object]]) -> torch.Tensor:
-#         if isinstance(imgs, Sequence):
-#             imgs = list(imgs)
-#             for i, img in enumerate(imgs):
-#                 imgs[i] = self.transform(img)
-#         else:
-#             imgs = self.transform(imgs)
-#         return imgs
 
 
 @TRANSFORMS.register_module()
@@ -272,187 +252,6 @@ class RandomResizedCropAndInterpolationWithTwoPic(object):
                                   interpolation), F.resized_crop(
                                       img, i, j, h, w, self.second_size,
                                       self.second_interpolation)
-
-
-# @TRANSFORMS.register_module()
-# class RandomAug(object):
-#     """RandAugment data augmentation method based on
-#     `"RandAugment: Practical automated data augmentation
-#     with a reduced search space"
-#     <https://arxiv.org/abs/1909.13719>`_.
-#
-#     This code is borrowed from <https://github.com/pengzhiliang/MAE-pytorch>
-#     """
-#
-#     def __init__(self,
-#                  input_size=None,
-#                  color_jitter=None,
-#                  auto_augment=None,
-#                  interpolation=None,
-#                  re_prob=None,
-#                  re_mode=None,
-#                  re_count=None,
-#                  mean=None,
-#                  std=None):
-#
-#         self.trans = create_transform(
-#             input_size=input_size,
-#             is_training=True,
-#             color_jitter=color_jitter,
-#             auto_augment=auto_augment,
-#             interpolation=interpolation,
-#             re_prob=re_prob,
-#             re_mode=re_mode,
-#             re_count=re_count,
-#             mean=mean,
-#             std=std,
-#         )
-#
-#     def __call__(self, img):
-#         return self.trans(img)
-#
-#     def __repr__(self) -> str:
-#         repr_str = self.__class__.__name__
-#         return repr_str
-
-
-# @TRANSFORMS.register_module()
-# class RandomAppliedTrans(object):
-#     """Randomly applied transformations.
-#
-#     Args:
-#         transforms (list[dict]): List of transformations in dictionaries.
-#         p (float, optional): Probability. Defaults to 0.5.
-#     """
-#
-#     def __init__(self, transforms, p=0.5):
-#         t = [build_from_cfg(t, TRANSFORMS) for t in transforms]
-#         self.trans = TRANSFORMS.RandomApply(t, p=p)
-#         self.prob = p
-#
-#     def __call__(self, img):
-#         return self.trans(img)
-#
-#     def __repr__(self):
-#         repr_str = self.__class__.__name__
-#         repr_str += f'prob = {self.prob}'
-#         return repr_str
-
-
-# custom transforms
-# @TRANSFORMS.register_module()
-# class Lighting(object):
-#     """Lighting noise(AlexNet - style PCA - based noise).
-#
-#     Args:
-#         alphastd (float, optional): The parameter for Lighting.
-#             Defaults to 0.1.
-#     """
-#
-#     _IMAGENET_PCA = {
-#         'eigval':
-#         torch.Tensor([0.2175, 0.0188, 0.0045]),
-#         'eigvec':
-#         torch.Tensor([
-#             [-0.5675, 0.7192, 0.4009],
-#             [-0.5808, -0.0045, -0.8140],
-#             [-0.5836, -0.6948, 0.4203],
-#         ])
-#     }
-#
-#     def __init__(self, alphastd=0.1):
-#         self.alphastd = alphastd
-#         self.eigval = self._IMAGENET_PCA['eigval']
-#         self.eigvec = self._IMAGENET_PCA['eigvec']
-#
-#     def __call__(self, img):
-#         assert isinstance(img, torch.Tensor), \
-#             f'Expect torch.Tensor, got {type(img)}'
-#         if self.alphastd == 0:
-#             return img
-#
-#         alpha = img.new().resize_(3).normal_(0, self.alphastd)
-#         rgb = self.eigvec.type_as(img).clone()\
-#             .mul(alpha.view(1, 3).expand(3, 3))\
-#             .mul(self.eigval.view(1, 3).expand(3, 3))\
-#             .sum(1).squeeze()
-#
-#         return img.add(rgb.view(3, 1, 1).expand_as(img))
-#
-#     def __repr__(self):
-#         repr_str = self.__class__.__name__
-#         repr_str += f'alphastd = {self.alphastd}'
-#         return repr_str
-
-
-# @TRANSFORMS.register_module()
-# class RandomGaussianBlur(object):
-#     """RandomGaussianBlur augmentation refers to `SimCLR.
-#
-#     <https://arxiv.org/abs/2002.05709>`_.
-#
-#     Args:
-#         sigma_min (float): The minimum parameter of Gaussian kernel std.
-#         sigma_max (float): The maximum parameter of Gaussian kernel std.
-#         p (float, optional): Probability. Defaults to 0.5.
-#     """
-#
-#     def __init__(self, sigma_min, sigma_max, prob=0.5):
-#         assert 0 <= prob <= 1.0, \
-#             f'The prob should be in range [0,1], got {prob} instead.'
-#         self.sigma_min = sigma_min
-#         self.sigma_max = sigma_max
-#         self.prob = prob
-#
-#     def __call__(self, results):
-#         if np.random.rand() > self.prob:
-#             return results
-#         img = results['img']
-#         sigma = np.random.uniform(self.sigma_min, self.sigma_max)
-#         img = img.filter(ImageFilter.GaussianBlur(radius=sigma))
-#         results['img']=img
-#         return results
-#
-#     def __repr__(self):
-#         repr_str = self.__class__.__name__
-#         repr_str += f'sigma_min = {self.sigma_min}, '
-#         repr_str += f'sigma_max = {self.sigma_max}, '
-#         repr_str += f'prob = {self.prob}'
-#         return repr_str
-
-
-# @TRANSFORMS.register_module()
-# class Solarization(object):
-#     """Solarization augmentation refers to `BYOL.
-#
-#     <https://arxiv.org/abs/2006.07733>`_.
-#
-#     Args:
-#         threshold (float, optional): The solarization threshold.
-#             Defaults to 128.
-#         p (float, optional): Probability. Defaults to 0.5.
-#     """
-#
-#     def __init__(self, threshold=128, p=0.5):
-#         assert 0 <= p <= 1.0, \
-#             f'The prob should be in range [0, 1], got {p} instead.'
-#
-#         self.threshold = threshold
-#         self.prob = p
-#
-#     def __call__(self, img):
-#         if np.random.rand() > self.prob:
-#             return img
-#         img = np.array(img)
-#         img = np.where(img < self.threshold, img, 255 - img)
-#         return Image.fromarray(img.astype(np.uint8))
-#
-#     def __repr__(self):
-#         repr_str = self.__class__.__name__
-#         repr_str += f'threshold = {self.threshold}, '
-#         repr_str += f'prob = {self.prob}'
-#         return repr_str
-#
 
 @TRANSFORMS.register_module()
 class RandomCrop(BaseTransform):
@@ -704,6 +503,69 @@ class RandomResizedCrop(BaseTransform):
         offset_h = (h - target_h) // 2
         offset_w = (w - target_w) // 2
         return offset_h, offset_w, target_h, target_w
+    
+    def im_resize(
+        self,
+        img: np.ndarray,
+        size: Tuple[int, int],
+        return_scale: bool = False,
+        interpolation: str = 'bilinear',
+        out: Optional[np.ndarray] = None,
+        backend: Optional[str] = None
+    ) -> Union[Tuple[np.ndarray, float, float], np.ndarray]:
+        """Resize image to a given size. Code from mmcv
+
+        Args:
+            img (ndarray): The input image.
+            size (tuple[int]): Target size (w, h).
+            return_scale (bool): Whether to return `w_scale` and `h_scale`.
+            interpolation (str): Interpolation method, accepted values are
+                "nearest", "bilinear", "bicubic", "area", "lanczos" for 'cv2'
+                backend, "nearest", "bilinear" for 'pillow' backend.
+            out (ndarray): The output destination.
+            backend (str | None): The image resize backend type. Options are `cv2`,
+                `pillow`, `None`. If backend is None, the global imread_backend
+                specified by ``mmcv.use_backend()`` will be used. Default: None.
+
+        Returns:
+            tuple | ndarray: (`resized_img`, `w_scale`, `h_scale`) or
+            `resized_img`.
+        """
+        h, w = img.shape[:2]
+        if backend not in ['cv2', 'pillow']:
+            raise ValueError(f'backend: {backend} is not supported for resize.'
+                            f"Supported backends are 'cv2', 'pillow'")
+        
+        if hasattr(Image, 'Resampling'):
+            pillow_interp_codes = {
+                'nearest': Image.Resampling.NEAREST,
+                'bilinear': Image.Resampling.BILINEAR,
+                'bicubic': Image.Resampling.BICUBIC,
+                'box': Image.Resampling.BOX,
+                'lanczos': Image.Resampling.LANCZOS,
+                'hamming': Image.Resampling.HAMMING
+            }
+        cv2_interp_codes = {
+            'nearest': cv2.INTER_NEAREST,
+            'bilinear': cv2.INTER_LINEAR,
+            'bicubic': cv2.INTER_CUBIC,
+            'area': cv2.INTER_AREA,
+            'lanczos': cv2.INTER_LANCZOS4
+}
+
+        if backend == 'pillow':
+            pil_image = Image.fromarray(img)
+            pil_image = pil_image.resize(size, pillow_interp_codes[interpolation])
+            resized_img = np.array(pil_image)
+        else:
+            resized_img = cv2.resize(
+                img, size, dst=out, interpolation=cv2_interp_codes[interpolation])
+        if not return_scale:
+            return resized_img
+        else:
+            w_scale = size[0] / w
+            h_scale = size[1] / h
+            return resized_img, w_scale, h_scale
 
     def transform(self, results: dict) -> dict:
         """Transform function to randomly resized crop images.
@@ -723,9 +585,9 @@ class RandomResizedCrop(BaseTransform):
                 offset_w, offset_h, offset_w + target_w - 1,
                 offset_h + target_h - 1
             ]))
-        img = mmcv.imresize(
-            img,
-            tuple(self.scale[::-1]),
+        img = self.im_resize(
+            img = img,
+            size = tuple(self.scale[::-1]),
             interpolation=self.interpolation,
             backend=self.backend)
         results['img'] = img

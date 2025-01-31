@@ -1,4 +1,4 @@
-# code inspired from https://github.com/MrGiovanni/ModelsGenesis
+# Original code from https://github.com/MrGiovanni/ModelsGenesis
 
 import sys
 import torch
@@ -15,13 +15,10 @@ from tqdm import tqdm
 from PIL import Image
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parents[3]))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from UNET.model import UNet
+from Finetuning.model import UNet
 from sklearn.model_selection import train_test_split
-
-print("torch = {}".format(torch.__version__))
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 conf = models_genesis_config()
 conf.display()
@@ -42,8 +39,6 @@ if conf.arcade == True :
 
     random.shuffle(X_pretrain)
     random.shuffle(X_test)
-    
-print(len(X_pretrain))
 
 x_train = []
 for i,file_name in enumerate(tqdm(X_pretrain)):
@@ -53,9 +48,6 @@ for i,file_name in enumerate(tqdm(X_pretrain)):
     s = s.resize((256, 256), resample= Image.BICUBIC)
     x_train.append(np.asarray(s))
 x_train = np.array(x_train)
-
-with open("xtrain_base.npy", 'wb') as f:
-    np.save(f,x_train[0])
 
 x_valid = []
 for i,file_name in enumerate(tqdm(X_test)):

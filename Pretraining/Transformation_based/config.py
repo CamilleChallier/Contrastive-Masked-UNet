@@ -6,7 +6,8 @@ class models_genesis_config:
     suffix = "genesis_chest_ct"
     exp_name = model + "-" + suffix
     
-    arcade = True
+    arcade = False # Use arcade dataset for pretraining. Dataset in ../dataset_arcane/train/imgs and test/imgs
+    ratio = 0.1 # ratio initial dataset
     
     # data
     data = "/data/challier/LTS4_coronary_segmentation/dataset/imgs"
