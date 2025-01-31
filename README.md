@@ -6,6 +6,8 @@
 
 **AIM.** To address this, we introduce CM-UNet, which leverages self-supervised pretraining on unannotated datasets and transfer learning on limited annotated data, enabling accurate disease detection while minimizing the reliance on extensive manual annotations.
 
+![Alt text](/data/challier/Contrastive-Masked-UNet/figures/CMUNet_architecture.png)
+
 **METHODS/FINDINGS.** Fine-tuning CM-UNet with only 18 images instead of 500 resulted in a 48.7\% increase in Dice score, compared to a 114.73\% rise in baseline models without pretraining. This demonstrates that self-supervised learning can enhance segmentation performance and reduce dependence on large datasets. This is one of the first studies to highlight the importance of self-supervised learning in improving coronary artery segmentation from X-ray angiography, with potential implications for advancing diagnostic accuracy in clinical practice. 
 
 **CONCLUSION.** This study highlights the potential of self-supervised learning in enhancing segmentation performance and reducing the need for extensive labeled datasets. The proposed method demonstrates significant improvements in coronary artery segmentation, even with limited annotated data, and showcase its robustness in adapting to datasets with varying amounts of labeled information.
