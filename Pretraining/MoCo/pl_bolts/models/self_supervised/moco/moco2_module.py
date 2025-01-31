@@ -369,15 +369,7 @@ class Moco_v2(LightningModule):
             type=str,
             default="cifar10",
             choices=[
-                "cifar10",
-                "imagenet2012",
-                "stl10",
-                "logo",
-                "custom",
-                "logo_pre_seg",
                 "medical",
-                "medical_pre_seg",
-                "medical_pre_seg_masks",
             ],
         )
         parser.add_argument("--batch_size", type=int, default=128)
