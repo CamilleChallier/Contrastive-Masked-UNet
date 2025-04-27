@@ -399,7 +399,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class soft_cldice(Loss):
-    """Soft clDice loss function for segmentation evaluation."""
+    """
+    Soft clDice loss function for segmentation evaluation.
+    Code from : https://github.com/jocpae/clDice
+    """
     __name__ = "soft_clDice"
     def __init__(self, iter_=3, smooth = 1., exclude_background=False, threshold=0.5, activation=None, ignore_channels=None):
         super(soft_cldice, self).__init__()

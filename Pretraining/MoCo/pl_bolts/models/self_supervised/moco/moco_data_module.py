@@ -3,6 +3,7 @@ from typing import Tuple
 
 import numpy as np
 import torch
+from pathlib import Path
 import torchvision.transforms as transforms
 from PIL import ImageFilter
 from pytorch_lightning import LightningDataModule
@@ -147,26 +148,14 @@ class MoCoDataModule(LightningDataModule):
         from sklearn.model_selection import train_test_split
 
         if self.data_dir == None : 
-            data = "../dataset/imgs"
+            current_path = Path(__file__).resolve()
+            data = current_path.parents[6] / "dataset" / "imgs"
+            
             imagePaths = [os.path.join(data, image_id) for image_id in sorted(os.listdir(data))]
             maskPaths = [os.path.join(data, image_id) for image_id in sorted(os.listdir(data))]
             X_train, X_test, y_train, _ = train_test_split(imagePaths, maskPaths, test_size=0.2, random_state=42)
             X_pretrain, _, _, _ = train_test_split(X_train, y_train, test_size=0.625, random_state=42)
-            # X_pretrain = X_train
-            print(len(X_pretrain))
             self.data_dir = X_pretrain
-            # if args.arcane == True :
-            data_path = "../dataset_arcane/train/imgs"
-            imagePathsArcane_train = [os.path.join(data_path, image_id) for image_id in sorted(os.listdir(data_path))]
-            data_path = "../dataset_arcane/test/imgs"
-            imagePathsArcane_test = [os.path.join(data_path, image_id) for image_id in sorted(os.listdir(data_path))]
-            
-            self.data_dir.extend(imagePathsArcane_train)
-            X_test.extend(imagePathsArcane_test)
-            import random
-            random.shuffle(X_pretrain)
-            random.shuffle(X_test)
-            print(len(self.data_dir))
 
     def prepare_data(self):
         pass

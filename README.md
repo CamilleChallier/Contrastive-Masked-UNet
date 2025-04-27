@@ -89,7 +89,7 @@ In the config.py replace model with 'Model Genesis'. Various other parameter cho
 ```bash
 cd Pretraining/Transformation_based/
 conda activate env
-python -W ignore pytorch/Genesis_Chest_CT.py
+python -W ignore Genesis_Chest_CT.py
 ```
 *Note: Original Code by [MrGiovanni/ModelsGenesis](https://github.com/MrGiovanni/ModelsGenesis).*
 
@@ -125,8 +125,7 @@ pip install -r requirements.txt
 ```
 
 ```bash
-cd Pretraining/spark/pretrain/
-python python main.py --full_unet True --model "unet_sparse"
+python main.py --full_unet True --model "unet_sparse"
 ```
 
 *Note: Original Code by [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*

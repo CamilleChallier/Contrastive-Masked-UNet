@@ -14,6 +14,7 @@ import os
 import random
 from functools import partial
 from typing import List
+from pathlib import Path
 
 import torch
 from torch.nn.parallel import DistributedDataParallel
@@ -43,13 +44,13 @@ class LocalDDP(torch.nn.Module):
 
 def main_pt():
     args: arg_util.Args = arg_util.init_dist_and_get_args()
-    print(args.arcade)
     print(f'initial args:\n{str(args)}')
     args.log_epoch()
     args.device = "cuda:1"
     print(args.device)
     
-    data = "../dataset/imgs"
+    current_path = Path(__file__).resolve()
+    data = current_path.parents[2] / "dataset" / "imgs"
     imagePaths = [os.path.join(data, image_id) for image_id in sorted(os.listdir(data))]
     maskPaths = [os.path.join(data, image_id) for image_id in sorted(os.listdir(data))]
     X_train, X_test, y_train, _ = train_test_split(imagePaths, maskPaths, test_size=0.2, random_state=42)

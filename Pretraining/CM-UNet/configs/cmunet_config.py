@@ -43,7 +43,7 @@ model = dict(
 
 # # dataset settings
 dataset_type = 'CMUNetDataset'
-data_root = '/data/challier/LTS4_coronary_segmentation/dataset/imgs'
+data_root = '../../dataset/imgs'
 img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375])
 train_pipeline = [
     dict(type='RandomResizedCrop', scale=256, crop_ratio_range=(0.2, 1.0), backend='pillow', interpolation='bicubic'),

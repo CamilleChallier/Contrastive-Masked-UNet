@@ -1,8 +1,9 @@
 import os
 import shutil
+from pathlib import Path
 
 class models_genesis_config:
-    model = "MAE"
+    model = "Model Genesis" # MAE or Model Genesis
     suffix = "genesis_chest_ct"
     exp_name = model + "-" + suffix
     
@@ -10,7 +11,8 @@ class models_genesis_config:
     ratio = 0.1 # ratio initial dataset
     
     # data
-    data = "/data/challier/LTS4_coronary_segmentation/dataset/imgs"
+    current_path = Path(__file__).resolve()
+    data = current_path.parents[2] / "dataset" / "imgs"
 
     input_rows = 64
     input_cols = 64 
