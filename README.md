@@ -126,7 +126,7 @@ pip install -r requirements.txt
 
 ```bash
 cd Pretraining/spark/pretrain/
-screen python main.py --full_unet True --model "unet_sparse"
+python python main.py --full_unet True --model "unet_sparse"
 ```
 
 *Note: Original Code by [keyu-tian/SparK](https://github.com/keyu-tian/SparK).*
