@@ -27,8 +27,14 @@
 │   ├── model.py # UNet model architecture
 │   ├── train.py # Run evaluation, hyperparameters finetuning
 │   ├── utils.py
-│   └── work_dir /
-│       └── ... # Saved models, losses and metrics
+│   ├── models_checkpoints # Saved model checkpoints
+│       ├── PT-FT_split_experiments
+│           └── ... # Directory containing loss and metrics results for different PT-FT split experiments. 
+│       ├── ratio_50-30
+│           └── ... # model checkpoints for the 50% pretraining and 30% fine-tuning ratio, for the optimal learning rate, batch size, and epochs.
+│       ├── ratio_79-1
+│           └── ... # model checkpoints for the 79% pretraining and 1% fine-tuning ratio, for the optimal learning rate, batch size, and epochs.
+
 ├── Pretraining
 │   ├── CMUNet
 │   │   └── ... # Directory containing self-supervised CMUNet implementation
