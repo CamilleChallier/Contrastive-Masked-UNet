@@ -4,7 +4,7 @@
 
 **BACKGROUND.** Medical image segmentation is a fundamental process for converting raw biomedical images into structured, interpretable data, which plays a pivotal role in clinical applications. It helps reduce diagnostic errors, relieve the radiologist's workload, and accelerate diagnosis. This study focuses on the segmentation of coronary arteries in X-ray angiography images for disease detection, a complex task hindered by several factors. Accurate segmentation is complicated by the intricate geometry of coronary vessels, low signal-to-noise ratios, and overlapping structures such as catheters, the spine, and ribs. Furthermore, training deep learning models for these tasks typically requires large and meticulously annotated data sets, a resource often scarce in the medical imaging domain due to the complexity of annotation, restricted access to data, and the rarity of certain conditions.
 
-**AIM.** To address this, we introduce CM-UNet, which leverages self-supervised pretraining on unannotated datasets and transfer learning on limited annotated data, enabling accurate disease detection while minimizing the reliance on extensive manual annotations.
+**AIM.** To address this, we introduce CM-UNet, which leverages self-supervised pretraining on unannotated datasets and transfer learning on limited annotated data, enabling accurate disease detection while minimizing the reliance on extensive manual annotations. The paper can be found here: https://arxiv.org/abs/2507.17779
 
 ![Alt text](figures/CMUNet_architecture.png)
 
