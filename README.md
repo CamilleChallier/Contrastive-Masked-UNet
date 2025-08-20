@@ -195,3 +195,17 @@ The training script supports the following arguments:
 | `--pretrained`     | `-p`  | `str`   | `None`                                    | Path to a pretrained model          |
 | `--name`           | `-n`  | `str`   | `"base"`                                  | Name for the trained model          |
 | `--ratio`          | `-r`  | `float` | `0.1`                                     | Ratio of the fine-tuning dataset    |
+
+## 📖 Citation 
+
+If you find this work useful, please consider citing it:
+```bibtex
+@misc{challier2025cmunetselfsupervisedlearningbasedmodel,
+      title={CM-UNet: A Self-Supervised Learning-Based Model for Coronary Artery Segmentation in X-Ray Angiography}, 
+      author={Camille Challier and Xiaowu Sun and Thabo Mahendiran and Ortal Senouf and Bernard De Bruyne and Denise Auberson and Olivier Müller and Stephane Fournier and Pascal Frossard and Emmanuel Abbé and Dorina Thanou},
+      year={2025},
+      eprint={2507.17779},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.QM},
+      url={https://arxiv.org/abs/2507.17779}, 
+}
