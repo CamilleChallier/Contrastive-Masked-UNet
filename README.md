@@ -148,6 +148,8 @@ cd Pretraining/CM-UNet/
 conda env create -f environment.yml
 conda activate cmunet
 ```
+Note: The environment.yml specifies CUDA 11.6 by default.
+If your system has a different CUDA version, modify the YAML accordingly or install compatible PyTorch/CUDA versions.
 
 **Run**
 ```bash
