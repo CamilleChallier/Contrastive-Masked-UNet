@@ -32,4 +32,3 @@ dependencies:
       - tensorboard-data-server==0.7.2
       - timm==1.0.12
       - tqdm==4.67.1
-prefix: /data/challier/miniconda3/envs/cmae
